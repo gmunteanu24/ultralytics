@@ -197,7 +197,16 @@ class Compose:
             >>> compose = Compose(transforms)
             >>> transformed_data = compose(input_data)
         """
+
         for t in self.transforms:
+            if isinstance(t, Compose):
+                cp = []
+                for c in t.transforms:
+                    if isinstance(c, CopyPaste) or isinstance(c, RandomPerspective):
+                        cp.append(c)
+                for cmp in cp:
+                    t.transforms.remove(cmp)
+
             data = t(data)
         return data
 
@@ -2116,7 +2125,7 @@ class Format:
         """
         if len(img.shape) < 3:
             img = np.expand_dims(img, -1)
-        img = img.transpose(2, 0, 1)
+        # img = img.transpose(0, 1, 2)
         img = np.ascontiguousarray(img[::-1] if random.uniform(0, 1) > self.bgr else img)
         img = torch.from_numpy(img)
         return img

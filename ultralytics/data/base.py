@@ -247,7 +247,7 @@ class BaseDataset(Dataset):
                     if self.cache != "ram":
                         self.ims[j], self.im_hw0[j], self.im_hw[j] = None, None, None
 
-            return im, (h0, w0), im.shape[:2]
+            return im, (h0, w0), im.shape[1:3]
 
         return self.ims[i], self.im_hw0[i], self.im_hw[i]
 
