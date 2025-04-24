@@ -202,11 +202,12 @@ class Compose:
             if isinstance(t, Compose):
                 cp = []
                 for c in t.transforms:
-                    if isinstance(c, CopyPaste) or isinstance(c, RandomPerspective):
+                    if isinstance(c, CopyPaste) or isinstance(c, RandomPerspective) or isinstance(c, BaseMixTransform):
                         cp.append(c)
                 for cmp in cp:
                     t.transforms.remove(cmp)
-
+            if isinstance(t, BaseMixTransform):
+                continue
             data = t(data)
         return data
 
